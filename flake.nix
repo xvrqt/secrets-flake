@@ -54,6 +54,7 @@
         spark = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEDnpWeIBR+QCwclhSqSDKTsYCLYPX0b38lYnKPYBEMM spark@machine";
         archive = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO6GH/nzYFaruIZ9ZORbBhYEzTHBnrCZXSJUK2rrs1jL archive@machine";
         lighthouse = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIHqtWTbqQE5iTFZiSJ47yTicBsOlIMHqG6ojON/jTcH lighthouse@machine";
+        tavern = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEZJyFDFrSKAgKvm1ZvZdGJ7fuzk+ecPMxGlPaV7Usr6 tavern@machine"
       };
       users = {
         crow = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHTsYcLV5djsXoISRIysYrbHOnPHt3SIqtXdiWIJ+m0Y crow@agenix";
