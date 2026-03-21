@@ -9,6 +9,8 @@
       # Import me to import Agenix and it's bare minimum configuration
       default = { pkgs, ... }:
         let
+          lib = pkgs.lib;
+
           keyPath = "/key";
           secretPath = "${keyPath}/secrets";
           agenixPath = "${keyPath}/agenix";
@@ -27,25 +29,46 @@
           imports = [
             agenix.nixosModules.default
           ];
-          # Install secret management tooling
-          environment.systemPackages = [
-            # age key generation and management
-            pkgs.age
-            agenix.packages.${pkgs.system}.default
-          ];
-          # We will always store our secrets on a removable 'key'
-          age = {
-            # Where the secrets will by symlinked/deployed to
-            # Where applications should look for them
-            secretsDir = secretPath;
-            # Where the secrets per generation are created
-            # (and then symlinked to secretsDir)
-            secretsMountPoint = generationPath;
-            # Where to look for keys to decrypt secrets
-            inherit identityPaths;
+          options = {
+            secrets = {
+              agenix = {
+                public_keys = {
+                  machines = lib.mkOption {
+                    type = lib.types.attrsOf lib.types.str;
+                    default = publicKeys.machines;
+                    description = "Public Agenix keys for different machines.";
+                  };
+                  users = lib.mkOption {
+                    type = lib.types.attrsOf lib.types.str;
+                    default = publicKeys.users;
+                    description = "Public Agenix keys for different users.";
+                  };
+                };
+              };
+            };
+          };
+          config = {
+            # Install secret management tooling
+            environment.systemPackages = [
+              # age key generation and management
+              pkgs.age
+              agenix.packages.${pkgs.system}.default
+            ];
+            # We will always store our secrets on a removable 'key'
+            age = {
+              # Where the secrets will by symlinked/deployed to
+              # Where applications should look for them
+              secretsDir = secretPath;
+              # Where the secrets per generation are created
+              # (and then symlinked to secretsDir)
+              secretsMountPoint = generationPath;
+              # Where to look for keys to decrypt secrets
+              inherit identityPaths;
+            };
           };
         };
     };
+
     # Public keys can be kept here, so they only need to be updated in one place
     # These keys encrypt all other secrets
     publicKeys = {
